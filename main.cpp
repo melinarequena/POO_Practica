@@ -11,7 +11,7 @@ Clase Universidad: es la clase contenedora que gestionará a los estudiantes.
 Operadores Sobrecargados: se deberá sobrecargar el operador de comparación para poder
 comparar estudiantes por su mejor promedio académico
  */
-
+/*
 
 #include <iostream>
 #include <string>
@@ -19,7 +19,9 @@ comparar estudiantes por su mejor promedio académico
 
 using namespace std;
 
-class Estudiante {
+
+ * COMPROBACION 2
+ * class Estudiante {
 private:
     string nombre;
     int edad;
@@ -90,4 +92,72 @@ int main() {
     universidad->mejorEstudiante()->mostrar();
 
     return 0;
+}
+
+ */
+
+/* FARMACIA
+ * PRODUCTOS: MEDICAMENTOS O CUIDADO PERSONAL
+ * ATRIBUTOS: CODIGO, NOMBRE Y PRECIO
+ * FARMACIA TIENE INVENTARIO (CONTENEDOR)
+ *
+ * OPERACIONES:
+ * 1) AGREGAR PRODUCTO AL INVENTARIO
+ * 2) VENDER PRODUCTO. REGISTRAR PRODUCTO, CON DATOS.
+ *
+ * */
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Producto{
+private:
+    string nombre;
+    int codigo;
+    float precio;
+public:
+    Producto(string n, int c, float p){
+        nombre = n;
+        codigo = c;
+        precio = p;
+        cout << "Se ha creado un nuevo producto" << endl;
+    }
+    ~Producto(){
+        cout << "Destrucción de producto " << endl;
+    }
+    friend class Farmacia;
+};
+
+class remedio: public Producto {
+};
+
+class cuidadoPersonal: public Producto {
+};
+
+
+class Farmacia{ //clase contenedora
+private:
+    vector <Producto*> Inventario;
+public:
+    void addProducto(Producto * producto){
+        Inventario.push_back(producto);
+    }
+    void venderProducto(string nombre){
+        Producto * vendido = Inventario.back(); // devuelve el ulimo elemento
+        Inventario.pop_back(); // elimina el ultimo elemento
+        cout << "Vendido: " << vendido->nombre << "Precio: " << vendido->precio << "Codigo: " << vendido->codigo << "Comprador: " << nombre << endl;
+    }
+};
+
+int main(){
+    Farmacia * farmacia = new Farmacia;
+    farmacia->addProducto(new Producto("Dermaglos", 123, 60.5));
+    farmacia->addProducto(new Producto("Ibuprofeno 400", 1106, 30.2));
+    farmacia->addProducto(new Producto("Paracetamol", 500, 29.6));
+
+    farmacia->venderProducto("Carla");
+
 }
