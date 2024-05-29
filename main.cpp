@@ -132,9 +132,13 @@ public:
 };
 
 class remedio: public Producto {
+public:
+    remedio(string n, int c, float p): Producto(n,c,p){}
 };
 
 class cuidadoPersonal: public Producto {
+public:
+    cuidadoPersonal(string n, int c, float p): Producto(n,c,p){}
 };
 
 
@@ -145,19 +149,39 @@ public:
     void addProducto(Producto * producto){
         Inventario.push_back(producto);
     }
-    void venderProducto(string nombre){
+    void venderProducto(const string& nombre){
         Producto * vendido = Inventario.back(); // devuelve el ulimo elemento
         Inventario.pop_back(); // elimina el ultimo elemento
-        cout << "Vendido: " << vendido->nombre << "Precio: " << vendido->precio << "Codigo: " << vendido->codigo << "Comprador: " << nombre << endl;
+        cout << " Vendido: " << vendido->nombre << " Precio: " << vendido->precio << " Codigo: " << vendido->codigo << " Comprador: " << nombre << endl;
+    }
+    void mostrarProductos(){
+        cout <<"\n\nListado:\n" << endl;
+        for(Producto * producto : Inventario){
+         cout << "Nombre:" << producto->nombre << " Codigo:" << producto->codigo << " Precio:" <<producto->precio << endl;
+        }
+    }
+    void liberarMemoria(){
+        if(Inventario.empty()){
+            return;
+        }
+        for(Producto * producto : Inventario){
+            delete producto;
+        }
     }
 };
 
 int main(){
     Farmacia * farmacia = new Farmacia;
-    farmacia->addProducto(new Producto("Dermaglos", 123, 60.5));
-    farmacia->addProducto(new Producto("Ibuprofeno 400", 1106, 30.2));
-    farmacia->addProducto(new Producto("Paracetamol", 500, 29.6));
+    farmacia->addProducto(new cuidadoPersonal("Dermaglos", 123, 60.5));
+    farmacia->addProducto(new remedio("Ibuprofeno 400", 1106, 30.2));
+    farmacia->addProducto(new remedio("Paracetamol", 500, 29.6));
+
+    farmacia->mostrarProductos();
 
     farmacia->venderProducto("Carla");
+
+    farmacia->liberarMemoria();
+
+    delete farmacia;
 
 }
